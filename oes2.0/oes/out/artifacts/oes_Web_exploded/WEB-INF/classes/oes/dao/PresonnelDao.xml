@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="oes.dao.PresonnelDao">
+
+    <resultMap id="presonnel" type="Presonnel">
+        <id property="number" column="number" javaType="Integer"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="classSubject" column="class_subject" javaType="String"/>
+        <result property="password" column="password" javaType="String"/>
+        <result property="roles" column="roles" javaType="String"/>
+    </resultMap>
+    <insert id="insert" parameterType="presonnel">
+        insert into personnel
+        values (#{number}, #{name}, #{classSubject}, #{password}, #{roles})
+    </insert>
+    <update id="update" parameterType="presonnel">
+        update personnel
+        set name=#{name},
+            class_subject=#{classSubject},
+            password=#{password},
+            roles=#{roles}
+        where number = #{number}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        delete
+        from personnel
+        where number = #{number}
+    </delete>
+    <select id="select" parameterType="Integer" resultMap="presonnel">
+        select *
+        from personnel
+        where number = #{number}
+    </select>
+    <select id="selectAll" resultMap="presonnel">
+        select *
+        from personnel
+        ORDER BY number DESC
+    </select>
+
+
+</mapper>

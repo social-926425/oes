@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.afterglow.oes.dao.TestPaperDao">
+
+    <resultMap id="testPaper" type="fun.afterglow.oes.entity.TestPaper">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="createId" column="create_id" javaType="Integer"/>
+        <result property="createDate" column="create_date" javaType="Date"/>
+        <result property="updateId" column="update_id" javaType="Integer"/>
+        <result property="updateDate" column="update_date" javaType="Date"/>
+        <result property="option1" column="option_1" javaType="Integer"/>
+        <result property="option2" column="option_2" javaType="Integer"/>
+        <result property="option3" column="option_3" javaType="Integer"/>
+        <result property="option4" column="option_4" javaType="Integer"/>
+        <result property="option5" column="option_5" javaType="Integer"/>
+        <result property="option6" column="option_6" javaType="Integer"/>
+        <result property="option7" column="option_7" javaType="Integer"/>
+        <result property="option8" column="option_8" javaType="Integer"/>
+        <result property="option9" column="option_9" javaType="Integer"/>
+        <result property="option10" column="option_10" javaType="Integer"/>
+        <result property="option11" column="option_11" javaType="Integer"/>
+        <result property="option12" column="option_12" javaType="Integer"/>
+        <result property="option13" column="option_13" javaType="Integer"/>
+        <result property="option14" column="option_14" javaType="Integer"/>
+        <result property="option15" column="option_15" javaType="Integer"/>
+        <result property="options1" column="options_1" javaType="Integer"/>
+        <result property="options2" column="options_2" javaType="Integer"/>
+        <result property="options3" column="options_3" javaType="Integer"/>
+        <result property="options4" column="options_4" javaType="Integer"/>
+        <result property="options5" column="options_5" javaType="Integer"/>
+        <result property="subjective1" column="subjective_1" javaType="Integer"/>
+        <result property="subjective2" column="subjective_2" javaType="Integer"/>
+        <result property="subjective3" column="subjective_3" javaType="Integer"/>
+        <result property="status" column="status" javaType="String"/>
+        <result property="totalScore" column="total_score" javaType="Integer"/>
+        <association property="creater" column="create_id" javaType="fun.afterglow.oes.entity.Presonnel">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="roles" column="croles" javaType="String"/>
+        </association>
+        <association property="dealer" column="update_id" javaType="fun.afterglow.oes.entity.Presonnel">
+            <result property="name" column="dname" javaType="String"/>
+            <result property="roles" column="droles" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="fun.afterglow.oes.entity.TestPaper">
+        insert into test_paper(create_id, create_date, update_id, update_date, option_1, option_2, option_3, option_4,
+                               option_5,
+                               option_6, option_7, option_8, option_9, option_10, option_11, option_12, option_13,
+                               option_14, option_15, options_1, options_2, options_3, options_4, options_5,
+                               subjective_1, subjective_2, subjective_3, status, total_score)
+        values (#{createId}, #{createDate}, #{updateId}, #{updateDate}, #{option1}, #{option2}, #{option3}, #{option4},
+                #{option5},
+                #{option6}, #{option7}, #{option8}, #{option9}, #{option10}, #{option11}, #{option12}, #{option13},
+                #{option14}, #{option15}, #{options1}, #{options2}, #{options3}, #{options4}, #{options5},
+                #{subjective1}, #{subjective2},
+                #{subjective3}, #{status}, #{totalScore})
+    </insert>
+    <update id="update" parameterType="fun.afterglow.oes.entity.TestPaper">
+        update test_paper
+        set create_id=#{createId},
+            create_date=#{createDate},
+            update_id=#{updateId},
+            update_date=#{updateDate},
+            option_1=#{option1},
+            option_2=#{option2},
+            option_3=#{option3},
+            option_4=#{option4},
+            option_5=#{option5},
+            option_6=#{option6},
+            option_7=#{option7},
+            option_8=#{option8},
+            option_9=#{option9},
+            option_10=#{option10},
+            option_11=#{option11},
+            option_12=#{option12},
+            option_13=#{option13},
+            option_14=#{option14},
+            option_15=#{option15},
+            options_1=#{options1},
+            options_2=#{options2},
+            options_3=#{options3},
+            options_4=#{options4},
+            options_5=#{options5},
+            subjective_1=#{subjective1},
+            subjective_2=#{subjective2},
+            subjective_3=#{subjective3},
+            status=#{status},
+            total_score=#{totalScore}
+        where id = #{id}
+    </update>
+    <select id="select" parameterType="Integer" resultMap="testPaper">
+        select tp.*, ce.name cname, ce.roles croles, d.name droles, d.roles dpost
+        from test_paper tp
+                 left join personnel ce on ce.number = tp.create_id
+                 left join personnel d on d.number = tp.update_id
+        where tp.id = #{id}
+    </select>
+    <select id="selectCid" parameterType="Integer" resultMap="testPaper">
+        SELECT *
+        FROM `test_paper`
+        WHERE create_id = #{createId}
+          AND status = '创建'
+    </select>
+    <select id="selectByCreate" parameterType="Integer" resultMap="testPaper">
+        SELECT *
+        FROM test_paper
+        WHERE create_id = #{createId}
+    </select>
+    <select id="selectByDeal" parameterType="Integer" resultMap="testPaper">
+        SELECT *
+        FROM `test_paper`
+        WHERE status = '交卷'
+    </select>
+    <select id="selectByResult" parameterType="Integer" resultMap="testPaper">
+        SELECT *
+        FROM `test_paper`
+        WHERE status = '批阅'
+    </select>
+
+
+</mapper>

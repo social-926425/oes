@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oes.dao.QuestionBankDao">
+
+    <resultMap id="questionBank" type="QuestionBank">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="topice" column="topice" javaType="String"/>
+        <result property="optionA" column="option_a" javaType="String"/>
+        <result property="optionB" column="option_b" javaType="String"/>
+        <result property="optionC" column="option_c" javaType="String"/>
+        <result property="optionD" column="option_d" javaType="String"/>
+        <result property="answer" column="answer" javaType="String"/>
+        <result property="score" column="score" javaType="Integer"/>
+        <result property="questionType" column="question_type" javaType="String"/>
+    </resultMap>
+    <insert id="insert" parameterType="questionBank">
+        insert into question_bank
+        values (#{id}, #{topice}, #{optionA}, #{optionB}, #{optionC}, #{optionD},
+                #{answer}, #{score}, #{questionType})
+    </insert>
+    <update id="update" parameterType="questionBank">
+        update question_bank
+        set topice=#{topice},
+            option_a=#{optionA},
+            option_b=#{optionB},
+            option_c=#{optionC},
+            option_d=#{optionD},
+            answer=#{answer},
+            score=#{score},
+            question_type=#{questionType}
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        delete
+        from question_bank
+        where id = #{id}
+    </delete>
+    <select id="select" parameterType="Integer" resultMap="questionBank">
+        select *
+        from question_bank
+        where id = #{id}
+    </select>
+    <select id="selectAll" resultMap="questionBank">
+        select *
+        from question_bank
+    </select>
+    <select id="selectMax" resultMap="questionBank">
+        select id
+        from question_bank
+    </select>
+</mapper>

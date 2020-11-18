@@ -1,0 +1,49 @@
+﻿<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--开启自动扫描-->
+    <context:component-scan base-package="oes.dao"/>
+
+    <!--数据源-->
+    <bean id="dataSoure" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!--驱动类-->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!--数据库连接的URL-->
+        <property name="url" value="jdbc:mysql://47.114.2.235:3306/exam?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="online_exam_system"/>
+        <property name="password" value="online_exam_system"/>
+
+    </bean>
+    <!--session工厂-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据源，关联申请的数据源-->
+        <property name="dataSource" ref="dataSoure"/>
+        <!--配置别名-->
+        <property name="typeAliasesPackage" value="oes.entity"/>
+        <!--配置pageHelper-->
+<!--        <property name="plugins">-->
+<!--            <array>-->
+<!--                <bean class="com.github.pagehelper.PageHelper">-->
+<!--                    <property name="properties">-->
+<!--                        <value>-->
+<!--                            &lt;!&ndash;数据源类型：mysql, mariadb, sqlite, oracle, hsqldb, postgresql, sqlserver, db2, informix, h2, sqlserver2012&ndash;&gt;-->
+<!--                            helperDialect=mysql-->
+<!--                            &lt;!&ndash;分页合理化参数，设置为true时，pageNum<=0时会查询第一页,pageNum>pages(超过总数时),会查询最后一页。&ndash;&gt;-->
+<!--                            reasonable=true-->
+<!--                        </value>-->
+<!--                    </property>-->
+<!--                </bean>-->
+<!--            </array>-->
+<!--        </property>-->
+    </bean>
+    <!--映射及接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+        <property name="basePackage" value="oes.dao"/>
+    </bean>
+</beans>

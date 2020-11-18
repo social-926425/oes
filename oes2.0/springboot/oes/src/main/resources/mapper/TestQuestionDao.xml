@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.afterglow.oes.dao.TestQuestionDao">
+
+    <resultMap id="testQuestion" type="fun.afterglow.oes.entity.TestQuestion">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="tpId" column="tp_id" javaType="Integer"/>
+        <result property="libId" column="lib_id" javaType="Integer"/>
+        <result property="libanwser" column="libanwser" javaType="String"/>
+        <result property="useranwser" column="useranwser" javaType="String"/>
+        <result property="createId" column="create_id" javaType="Integer"/>
+        <result property="createDate" column="create_date" javaType="Date"/>
+        <result property="updateDate" column="update_date" javaType="Date"/>
+        <result property="updateId" column="update_id" javaType="String"/>
+        <result property="grade" column="grade" javaType="Integer"/>
+        <result property="machineGrade" column="machine_grade" javaType="Integer"/>
+        <result property="machineDate" column="machine_date" javaType="Date"/>
+        <result property="status" column="status" javaType="String"/>
+        <association property="creater" column="create_id" javaType="fun.afterglow.oes.entity.Presonnel">
+            <result property="name" column="cname" javaType="String"/>
+            <result property="roles" column="croles" javaType="String"/>
+        </association>
+        <association property="dealer" column="update_id" javaType="fun.afterglow.oes.entity.Presonnel">
+            <result property="name" column="dname" javaType="String"/>
+            <result property="roles" column="droles" javaType="String"/>
+        </association>
+        <association property="questionBank" column="lib_id" javaType="fun.afterglow.oes.entity.QuestionBank">
+            <result property="topice" column="topice" javaType="String"/>
+            <result property="optionA" column="option_a" javaType="String"/>
+            <result property="optionB" column="option_b" javaType="String"/>
+            <result property="optionC" column="option_c" javaType="String"/>
+            <result property="optionD" column="option_d" javaType="String"/>
+            <result property="answer" column="answer" javaType="String"/>
+            <result property="score" column="score" javaType="Integer"/>
+            <result property="questionType" column="question_type" javaType="String"/>
+        </association>
+    </resultMap>
+    <insert id="insert" parameterType="fun.afterglow.oes.entity.TestQuestion">
+        insert into test_question(tp_id,lib_id, libanwser, useranwser, create_id,create_date,update_id,update_date,grade, machine_grade,
+            machine_date, status)
+        values (#{tpId}, #{libId}, #{libanwser}, #{useranwser}, #{createId},#{createDate}, #{updateId}, #{updateDate}, #{grade},
+                #{machineGrade}, #{machineDate}, #{status})
+    </insert>
+    <update id="update" parameterType="fun.afterglow.oes.entity.TestQuestion">
+        update test_question
+        set tp_id=#{tpId},
+            lib_id=#{libId},
+            libanwser=#{libanwser},
+            useranwser=#{useranwser},
+            create_id=#{createId},
+            create_date=#{createDate},
+            update_id=#{updateId},
+            update_date=#{updateDate},
+            grade=#{grade},
+            machine_grade=#{machineGrade},
+            machine_date=#{machineDate},
+            status=#{status}
+        where id = #{id}
+    </update>
+    <select id="select" parameterType="Integer" resultMap="testQuestion">
+        select tq.*,ce.name cname,ce.roles cpost,d.name dname,d.roles dpost,qb.*
+        from test_question tq
+                 left join personnel ce on ce.number=tq.create_id
+                 left join personnel d on d.number = tq.update_id
+                 left join question_bank qb on qb.id = tq.lib_id
+        where tq.id=#{id}
+    </select>
+    <select id="selecTpId" parameterType="fun.afterglow.oes.entity.TestQuestion" resultMap="testQuestion">
+        select * from test_question where tp_id=#{tpId} and lib_id=#{libId} and status=#{status}
+    </select>
+
+
+</mapper>

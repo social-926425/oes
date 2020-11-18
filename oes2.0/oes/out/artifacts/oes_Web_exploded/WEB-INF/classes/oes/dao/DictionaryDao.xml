@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oes.dao.DictionaryDao">
+    <resultMap id="dictionary" type="Dictionary">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="pId" column="p_id" javaType="Integer"/>
+        <result property="path" column="path" javaType="String"/>
+        <result property="namePath" column="name_path" javaType="String"/>
+        <result property="enName" column="en_name" javaType="String"/>
+        <result property="cnName" column="cn_name" javaType="String"/>
+        <result property="code" column="code" javaType="String"/>
+        <result property="value" column="value" javaType="String"/>
+        <result property="attribute1" column="attribute1" javaType="String"/>
+        <result property="attribute2" column="attribute2" javaType="String"/>
+        <result property="attribute3" column="attribute3" javaType="String"/>
+        <result property="state" column="state" javaType="String"/>
+        <association property="parent" column="pId" javaType="oes.entity.Dictionary">
+            <id property="id" column="pid" javaType="Integer"/>
+            <result property="path" column="ppath" javaType="String"/>
+            <result property="PId" column="ppId" javaType="Integer"/>
+        </association>
+    </resultMap>
+    <delete id="deleteDictionary" parameterType="Integer">
+        DELETE
+        FROM dictionary
+        WHERE id = #{id}
+    </delete>
+    <update id="editDictionary" parameterType="oes.entity.Dictionary">
+        UPDATE dictionary
+        set cn_name=#{cnName},
+            en_name=#{enName},
+            code=#{code},
+            value=#{value},
+            attribute1=#{attribute1},
+            attribute2=#{attribute2},
+            attribute3=#{attribute3},
+            state=#{state}
+        where id = #{id}
+    </update>
+    <insert id="insertDictionary" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO dictionary(p_id, path, name_path, en_name, cn_name, code, value, attribute1, attribute2,
+                               attribute3, state)
+        VALUES (#{pId},
+                #{path},
+                #{namePath},
+                #{enName},
+                #{cnName},
+                #{code},
+                #{value},
+                #{attribute1},
+                #{attribute2},
+                #{attribute3},
+                #{state})
+    </insert>
+    <select id="selectBypId" parameterType="Integer" resultMap="dictionary">
+        SELECT id,
+               p_id,
+               path,
+               name_path,
+               en_name,
+               cn_name,
+               code,
+               value,
+               attribute1,
+               attribute2,
+               attribute3,
+               state
+        FROM dictionary
+        WHERE id = #{pId}
+    </select>
+    <select id="selectById" parameterType="Integer" resultMap="dictionary">
+        SELECT id,
+               p_id,
+               path,
+               name_path,
+               en_name,
+               cn_name,
+               code,
+               value,
+               attribute1,
+               attribute2,
+               attribute3,
+               state
+        FROM dictionary
+        WHERE id = #{id}
+    </select>
+    <select id="queryDictionary" resultMap="dictionary" parameterType="Integer">
+        SELECT id,
+               p_id,
+               path,
+               name_path,
+               en_name,
+               cn_name,
+               code,
+               value,
+               attribute1,
+               attribute2,
+               attribute3,
+               state
+        FROM dictionary
+        WHERE p_id = #{pId}
+    </select>
+</mapper>

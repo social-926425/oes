@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%thread] %d %level %logger{10} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--RollingFileAppender日滚动文件：生成按天生成的日志文件-->
+    <appender name="accessHistoryLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--TimeBasedRollingPolicy：按照时间开始滚动-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>e:/logs/history.%d.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%thread] %d %level %logger{10} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="debug">
+        <appender-ref ref="console"/>
+    </root>
+    <logger name="fun.afterglow.restful.interceptor.AccessHistoryInterceptor" level="INFO" additivity="false">
+        <appender-ref ref="accessHistoryLog"/>
+    </logger>
+</configuration>
